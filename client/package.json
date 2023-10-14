@@ -11,10 +11,7 @@
     "axios": "^1.5.1",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.6.4",
-<<<<<<< HEAD
     "framer-motion": "^10.16.4",
-=======
->>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
     "jsonwebtoken": "^9.0.2",
     "react": "^18.2.0",
     "react-card-slider-component": "^1.0.9",
