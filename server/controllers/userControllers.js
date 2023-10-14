@@ -27,10 +27,6 @@ module.exports.signup = async (req, res) => {
 		res.json({ status: 'error' });
 	}
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
 module.exports.signin = async (req, res) => {
 	const { email, password } = req.body;
 	console.log(req.body);
@@ -56,8 +52,6 @@ module.exports.signin = async (req, res) => {
 		return res.json({ status: 'error', user: 'false' });
 	}
 };
-<<<<<<< HEAD
-=======
 
 module.exports.uploadImg = async (req, res) => {
 	const imageInfo = req.file;
@@ -68,4 +62,3 @@ module.exports.fetchLeaderboard = async (req, res) => {
 	const users = await User.find({}).sort({ 'waste.recyclable': -1 });
 	res.json(users);
 }
->>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
