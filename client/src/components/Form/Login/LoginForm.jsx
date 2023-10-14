@@ -3,7 +3,7 @@ import { signInRoute } from '../../../utils/APIRoutes';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ({onLogin}) => {
+const LoginForm = ({ onLogin }) => {
 	const navigate = useNavigate();
 	const [creds, setCreds] = useState({
 		email: '',
@@ -22,7 +22,6 @@ const LoginForm = ({onLogin}) => {
 		e.preventDefault();
 		try {
 			const { data } = await axios.post(signInRoute, creds);
-
 			if (data.status === 'ok') {
 				localStorage.setItem('token', data.user);
 				navigate('/profile');

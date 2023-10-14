@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const jwt_decode = require('jwt-decode');
 const User = require('../models/userModel');
 
 module.exports.signup = async (req, res) => {
@@ -16,7 +17,6 @@ module.exports.signup = async (req, res) => {
 		await user.save();
 		const token = jwt.sign(
 			{
-				name: user.name,
 				email: user.email,
 			},
 			'concetto-masterstack2.0-project',
@@ -28,9 +28,17 @@ module.exports.signup = async (req, res) => {
 	}
 };
 
+module.exports.userDetails = async (req, res) => {
+	const { email } = req.body;
+	console.log('In userDetails: ', req.body);
+	const user = await User.find({
+		email,
+	});
+	res.json(user);
+};
+
 module.exports.signin = async (req, res) => {
 	const { email, password } = req.body;
-	console.log(req.body);
 	const user = await User.find({
 		email,
 	});
@@ -38,13 +46,14 @@ module.exports.signin = async (req, res) => {
 	if (user.length > 0) {
 		const isPasswordValid = await bcrypt.compare(password, user[0].password);
 		if (isPasswordValid) {
+			console.log(user);
 			const token = jwt.sign(
 				{
-					name: user.name,
-					email: user.email,
+					email: user[0].email,
 				},
 				'concetto-masterstack2.0-project',
 			);
+			console.log('token: ', jwt.decode(token));
 			return res.json({ status: 'ok', user: token });
 		} else {
 			return res.json({ status: 'error', user: 'invalid password' });
@@ -61,5 +70,6 @@ module.exports.uploadImg = async (req, res) => {
 
 module.exports.fetchLeaderboard = async (req, res) => {
 	const users = await User.find({}).sort({ 'waste.recyclable': -1 });
+	// console.log(users);
 	res.json(users);
-}
+};

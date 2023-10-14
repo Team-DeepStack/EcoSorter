@@ -1,7 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
 import { Link, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
+import { getUserRoute } from '../../utils/APIRoutes';
 
 const navigation = [
 	{ name: 'Start', href: '/', current: true },
@@ -15,6 +18,19 @@ function classNames(...classes) {
 }
 
 const NavBar = ({ onLogout, isLoggedIn }) => {
+	const [pfp, setPfp] = useState('');
+	const getPfp = useCallback(async () => {
+		const token = localStorage.getItem('token');
+		const email = jwt_decode(token).email;
+		const { data } = await axios.post(getUserRoute, {
+			email,
+		});
+		setPfp(data[0].pfp);
+	}, []);
+
+	useEffect(() => {
+		if (isLoggedIn) getPfp();
+	}, [isLoggedIn, getPfp]);
 
 	const logoutBtnhandler = () => {
 		onLogout();
@@ -28,11 +44,7 @@ const NavBar = ({ onLogout, isLoggedIn }) => {
 						<Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
 							<span className="absolute -inset-1.5" />
 							<span className="sr-only">Open user menu</span>
-							<img
-								className="h-8 w-8 rounded-full"
-								src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-								alt=""
-							/>
+							<img className="h-8 w-8 rounded-full" src={pfp} alt="" />
 						</Menu.Button>
 					</div>
 					<Transition
@@ -48,26 +60,13 @@ const NavBar = ({ onLogout, isLoggedIn }) => {
 							<Menu.Item>
 								{({ active }) => (
 									<Link
-										href="/"
+										to="/profile"
 										className={classNames(
 											active ? 'bg-gray-100' : '',
 											'block px-4 py-2 text-sm text-gray-700',
 										)}
 									>
 										Your Profile
-									</Link>
-								)}
-							</Menu.Item>
-							<Menu.Item>
-								{({ active }) => (
-									<Link
-										href="/"
-										className={classNames(
-											active ? 'bg-gray-100' : '',
-											'block px-4 py-2 text-sm text-gray-700',
-										)}
-									>
-										Settings
 									</Link>
 								)}
 							</Menu.Item>
@@ -127,14 +126,11 @@ const NavBar = ({ onLogout, isLoggedIn }) => {
 										)}
 									</Disclosure.Button>
 								</div>
-								<div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-									<div className="flex flex-shrink-0 items-center">
-										<img
-											className="h-8 w-auto"
-											src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-											alt="Your Company"
-										/>
-									</div>
+								<div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start text-2xl font-bold">
+									<Link to="/home" className="flex flex-shrink-0 items-center">
+										<span className="text-green-600">Eco</span>
+										<span className="text-blue-600">Sorter</span>
+									</Link>
 									<div className="hidden sm:ml-6 sm:block">
 										<div className="flex space-x-4">
 											{navigation.map((item) => (
@@ -156,15 +152,6 @@ const NavBar = ({ onLogout, isLoggedIn }) => {
 									</div>
 								</div>
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-									<button
-										type="button"
-										className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-									>
-										<span className="absolute -inset-1.5" />
-										<span className="sr-only">View notifications</span>
-										<BellIcon className="h-6 w-6" aria-hidden="true" />
-									</button>
-
 									{/* Profile dropdown */}
 									<LoginConfigure />
 								</div>

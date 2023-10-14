@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { uploadImgRoute } from '../../../utils/APIRoutes';
+import { motion } from 'framer-motion';
 
 const UserInfo = ({ changeStep, infoChange }) => {
 	const [info, setInfo] = useState({
@@ -50,7 +51,7 @@ const UserInfo = ({ changeStep, infoChange }) => {
 	}, [info, infoChange]);
 
 	return (
-		<div className="w-full flex flex-col justify-around items-center">
+		<>
 			<div className="text-4xl font-bold">Create your Profile</div>
 
 			<div className="w-10/12">
@@ -205,7 +206,7 @@ const UserInfo = ({ changeStep, infoChange }) => {
 					Register
 				</button>
 			</div>
-		</div>
+		</>
 	);
 };
 
