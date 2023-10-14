@@ -25,11 +25,19 @@ const User = new Schema(
 			required: true,
 		},
 		waste: {
+<<<<<<< HEAD
 			bio: {
 				type: Number,
 				default: 0,
 			},
 			non_bio: {
+=======
+			recyclable: {
+				type: Number,
+				default: 0,
+			},
+			non_recyclable: {
+>>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
 				type: Number,
 				default: 0,
 			},

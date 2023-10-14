@@ -3,6 +3,7 @@ import recycle_illustration from '../assets/recycle_illustration.png';
 import { Badge } from 'flowbite-react';
 import { FiMapPin } from 'react-icons/fi';
 import { Tabs } from 'flowbite-react';
+<<<<<<< HEAD
 import { HiUserCircle } from 'react-icons/hi';
 import { IoIosQrScanner } from 'react-icons/io';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -13,6 +14,14 @@ function ProfilePage() {
 	// const customTheme: CustomFlowbiteTheme['tabitem'] = {
 	//     base: "flex items-center justify-center p-4 rounded-t-lg text-sm font-medium first:ml-0 disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500 focus:outline-none",
 	//   };
+=======
+import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { MdLeaderboard } from 'react-icons/md';
+import ImageUploader from '../components/ImageUploader';
+import Leaderboard from '../components/Leaderboard';
+
+function ProfilePage() {
+>>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
 	return (
 		<Fragment>
 			<div className="grid grid-cols-4 gap-x-10">
@@ -41,6 +50,7 @@ function ProfilePage() {
 					</span>
 				</div>
 				<div className="col-span-3 mt-10">
+<<<<<<< HEAD
 					{/* <div className='flex-col justify-ceter items-center w-[50vw]'>
                     <h1 className='text-4xl mb-10'>Leaderboard</h1>
                     <div className='flex justify-around items-center my-2'>
@@ -106,6 +116,22 @@ function ProfilePage() {
 						</Tabs.Item>
 						<Tabs.Item icon={MdLeaderboard} title="Leaderboard">
 							<div className="flex justify-around items-center my-2">
+=======
+					<Tabs.Group aria-label="Tabs with underline" style="underline">
+						<Tabs.Item active icon={AiOutlineCloudUpload} title="Uploader">
+							<div className="flex flex-col">
+								<p>
+									Want to add more value to the society? Upload your waste and
+									and let us guide you about its final destination!
+								</p>
+								<ImageUploader />
+							</div>
+						</Tabs.Item>
+
+						<Tabs.Item icon={MdLeaderboard} title="Leaderboard">
+							<Leaderboard />
+							{/* <div className="flex justify-around items-center my-2">
+>>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
 								<img
 									src={recycle_illustration}
 									className="w-10 rounded-full"
@@ -152,6 +178,7 @@ function ProfilePage() {
 									<FiMapPin className="w-7 mt-1 text-[#05299E]" />
 									Kolkata, West Bengal
 								</p>
+<<<<<<< HEAD
 							</div>
 						</Tabs.Item>
 						{/* <Tabs.Item
@@ -190,6 +217,10 @@ function ProfilePage() {
           Disabled content
         </p>
       </Tabs.Item> */}
+=======
+							</div> */}
+						</Tabs.Item>
+>>>>>>> d29dc85a025f445430eeef9aa41c3d70ab043222
 					</Tabs.Group>
 				</div>
 			</div>
