@@ -1,34 +1,59 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { uploadToModel } from '../utils/APIRoutes';
+import { addContributionRoute, uploadToModel } from '../utils/APIRoutes';
 
-const ImageUploader = () => {
+const ImageUploader = ({userId}) => {
 	const [image, setImage] = useState(null);
+	const [img, setImg] = useState(null);
+	const [prediction, setPrediction] = useState('');
 
 	const fileUploadHandler = async (e) => {
 		e.preventDefault();
 		const file = e.target.files[0];
+		setImage(file);
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-			setImage(reader.result);
+			setImg(reader.result);
 		};
 	};
 
 	const getPrediction = useCallback(async (image) => {
-		const { data } = await axios.post(uploadToModel, { image });
-		// edit here for integrating ML model
+		const formData = new FormData();
+		formData.append('file', image);
+
+		const {data} = await axios.post(uploadToModel, formData);
+		const ans = data['prediction'];
+		if (
+			ans === 'plastic' ||
+			ans === 'brown-glass' ||
+			ans === 'white-glass' ||
+			ans === 'green-glass'
+		) {
+			setPrediction('non_recyclable');
+		} else {
+			setPrediction('recyclable');
+		}
 	}, []);
 
 	useEffect(() => {
 		if (image) getPrediction(image);
 	}, [image, getPrediction]);
 
+	const appendContributions = useCallback( async(pred, userId) => {
+		await axios.patch( addContributionRoute, {userId, prediction: pred});
+	}, [])
+
+	useEffect(() => {
+		if(image)
+			appendContributions(prediction, userId);
+	}, [image, prediction, appendContributions, userId]);
+
 	return (
-		<div className="h-[50vh] w-4/5 flex items-center justify-center">
+		<div className="h-[50vh] w-4/5 flex flex-col items-center justify-center">
 			<label
 				htmlFor="dropzone-file"
-				className="flex flex-col items-center justify-center w-3/5 h-4/5 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+				className="flex flex-col items-center justify-center w-3/5 h-4/5 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 overflow-hidden"
 			>
 				{image === null ? (
 					<div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -56,7 +81,7 @@ const ImageUploader = () => {
 						</p>
 					</div>
 				) : (
-					<img src={image} alt="" />
+					<img src={img} alt="" />
 				)}
 				<input
 					id="dropzone-file"
@@ -65,6 +90,15 @@ const ImageUploader = () => {
 					onChange={(e) => fileUploadHandler(e)}
 				/>
 			</label>
+			{prediction !== '' ? (
+				<div className="mt-5">
+					<p className="text-3xl font-semibold text-gray-700 dark:text-gray-200">
+						{prediction === 'recyclable' ? 'Recyclable' : 'Non-Recyclable'}
+					</p>
+				</div>
+			) : (
+				''
+			)}
 		</div>
 	);
 };

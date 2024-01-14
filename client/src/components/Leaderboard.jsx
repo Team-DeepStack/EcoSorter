@@ -13,6 +13,7 @@ const trimWords = (str) => {
 };
 
 const TableRow = ({ rank, name, contributions, location, pfp }) => {
+	if (!name) return;
 	return (
 		<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 			<th
@@ -40,11 +41,12 @@ const Leaderboard = () => {
 
 	const fetchLeaderboard = useCallback(async () => {
 		const { data } = await axios.get(fetchLeaderboardRoute);
+		console.log('data: ', data);
 		const dummyArray = data.map((item) => {
 			return {
 				name: item.name,
-				contributions: item.waste.recyclable + item.waste.non_recyclable,
-				location: item.location,
+				contributions: item.recyclable,
+				location: item.address,
 				pfp: item.pfp,
 			};
 		});
@@ -52,7 +54,7 @@ const Leaderboard = () => {
 	}, []);
 
 	useEffect(() => {
-		if (boardArray.length > 0) fetchLeaderboard();
+		if (boardArray.length === 0) fetchLeaderboard();
 	}, [fetchLeaderboard, boardArray]);
 
 	return (

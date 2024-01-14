@@ -1,1 +1,6 @@
 /node_modules
+.env
+/env
+/resnet18_best.pth
+/__pycache__
+h.txt

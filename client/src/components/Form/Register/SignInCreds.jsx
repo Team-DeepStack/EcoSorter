@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const SignInCreds = ({ changeStep, credsChange }) => {
 	const [creds, setCreds] = useState({
@@ -18,7 +19,7 @@ const SignInCreds = ({ changeStep, credsChange }) => {
 	}, [creds, credsChange]);
 
 	return (
-		<div className="w-full flex flex-col justify-around items-center">
+		<>
 			<div className="text-5xl font-bold">Register</div>
 			<div className="w-10/12">
 				<label
@@ -104,7 +105,7 @@ const SignInCreds = ({ changeStep, credsChange }) => {
 					</svg>
 				</button>
 			</div>
-		</div>
+		</>
 	);
 };
 
