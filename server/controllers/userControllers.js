@@ -37,6 +37,15 @@ module.exports.userDetails = async (req, res) => {
   res.json(user);
 };
 
+module.exports.userDetails = async (req, res) => {
+  const { email } = req.body;
+  console.log("In userDetails: ", req.body);
+  const user = await User.find({
+    email,
+  });
+  res.json(user);
+};
+
 module.exports.signin = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.find({
